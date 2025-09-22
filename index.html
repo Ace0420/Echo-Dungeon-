@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dungeon Explorer - Voice Adventure</title>
     <style>
-        /* Ultra-simple, high-contrast design */
+        /* Ultra-simple, high-contrast design for accessibility */
         body {
             margin: 0;
             padding: 0;
-            background: #000; /* Pure black */
+            background: #000; /* Pure black background */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,13 +20,13 @@
         .mic-button {
             width: 90vw;
             height: 90vh;
-            max-width: 400px; /* Smaller target */
+            max-width: 400px;
             max-height: 400px;
             border-radius: 50%;
             background: #ff4444; /* Bright red - maximum contrast */
             border: 8px solid #ffffff; /* Thick white border */
             color: #ffffff;
-            font-size: 36px; /* Large, readable text */
+            font-size: 36px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
@@ -35,9 +35,12 @@
             flex-direction: column;
             text-shadow: 2px 2px 4px #000;
             transition: all 0.2s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .mic-button:hover, .mic-button:focus {
+        .mic-button:hover,
+        .mic-button:focus {
             background: #ff6666;
             transform: scale(1.05);
         }
@@ -65,10 +68,23 @@
         .mic-button:focus {
             outline: 4px solid #ffff00; /* Yellow focus ring */
         }
+
+        @media (max-width: 480px) {
+            .mic-button {
+                width: 95vw;
+                height: 80vh;
+                font-size: 28px;
+            }
+            
+            .mic-icon {
+                font-size: 60px;
+            }
+        }
     </style>
 </head>
 <body>
-    <button id="micButton" class="mic-button" onclick="toggleListening()" aria-label="Voice command button - press to speak">
+    <button id="micButton" class="mic-button" onclick="toggleListening()" 
+            aria-label="Voice command button - press to speak">
         <div class="mic-icon" aria-hidden="true">🎤</div>
         <div id="micText" aria-live="polite">SPEAK</div>
     </button>
@@ -80,15 +96,23 @@
     <script src="js/dungeon-core.js"></script>
     <script>
         // Initialize game
-        document.addEventListener('DOMContentLoaded', initializeGame);
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeGame();
+        });
         
-        // Keyboard support
+        // Keyboard support for accessibility
         document.addEventListener('keydown', function(e) {
             if (e.code === 'Space') {
                 e.preventDefault();
                 toggleListening();
             }
         });
+
+        function initializeGame() {
+            setTimeout(() => {
+                speak("Welcome to Dungeon Explorer! I am your guide through this voice-controlled adventure. First, choose your class. Say warrior for a strong fighter, mage for a magic user, or rogue for a stealthy adventurer.");
+            }, 1000);
+        }
     </script>
 </body>
 </html>

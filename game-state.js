@@ -50,9 +50,14 @@ const classes = {
 window.gameState = gameState;
 window.classes = classes;
 
-// Class selection function
+// FIXED: Class selection function
 function selectClass(className) {
     const classData = classes[className];
+    if (!classData) {
+        speak("I don't recognize that class. Please say warrior, mage, or rogue.");
+        return;
+    }
+    
     gameState.player.class = className;
     gameState.player.health = classData.baseHealth;
     gameState.player.maxHealth = classData.baseHealth;
@@ -77,5 +82,6 @@ function rollDice(sides) {
     return Math.floor(Math.random() * sides) + 1;
 }
 
+// Make functions globally available
 window.rollDice = rollDice;
 window.selectClass = selectClass;

@@ -95,24 +95,43 @@
     <script src="js/commands.js"></script>
     <script src="js/dungeon-core.js"></script>
     <script>
-        // Initialize game
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeGame();
-        });
+        // FIXED: Bulletproof initialization
+        function initializeGame() {
+            console.log('=== Dungeon Explorer Starting ===');
+            
+            // Check if speak function is available
+            if (typeof speak === 'undefined') {
+                console.error('ERROR: speak() function not loaded!');
+                document.getElementById('micText').textContent = 'LOAD ERROR';
+                return;
+            }
+            
+            console.log('Speech system ready - playing welcome message');
+            
+            const welcomeMessage = "Welcome to Dungeon Explorer! I am your guide through this voice-controlled adventure. First, choose your class. Say warrior for a strong fighter, mage for a magic user, or rogue for a stealthy adventurer. Press the red button and speak your choice!";
+            
+            speak(welcomeMessage, true);
+            console.log('Welcome message sent - game ready!');
+        }
         
-        // Keyboard support for accessibility
+        // Start when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(initializeGame, 500);
+            });
+        } else {
+            setTimeout(initializeGame, 500);
+        }
+        
+        // Keyboard support
         document.addEventListener('keydown', function(e) {
             if (e.code === 'Space') {
                 e.preventDefault();
-                toggleListening();
+                if (typeof toggleListening !== 'undefined') {
+                    toggleListening();
+                }
             }
         });
-
-        function initializeGame() {
-            setTimeout(() => {
-                speak("Welcome to Dungeon Explorer! I am your guide through this voice-controlled adventure. First, choose your class. Say warrior for a strong fighter, mage for a magic user, or rogue for a stealthy adventurer.");
-            }, 1000);
-        }
     </script>
 </body>
 </html>
